@@ -1,26 +1,454 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --navy: #17293a;
+  --navy-deep: #0d1a26;
+  --teal: #2f6f62;
+  --teal-deep: #21504a;
+  --blush: #d9a3b4;
+  --blush-deep: #c1849c;
+  --mustard-bg: #d7ae5c;
+  --mustard-deep: #a9761f;
+  --cream: #f7edd9;
+  --cream-2: #efe0bd;
+  --ink: #2c1a10;
+  --gold: #b8862f;
+  --gold-light: #f3d98b;
+  --mustard: #c98a2e;
+
+  /* mural palette (seam-stitching contract — each hex must match the
+     matching art asset's edge fade exactly; tune here if AI art drifts) */
+  --sky: #7fabde;
+  --sky-haze: #bee3f1;
+  --wall-cream: #f6ebd3;
+  --invite-cream: #fbf3e0;
+  --maroon: #7a1f2b;
+  --maroon-deep: #45080e;
+  --gold-sun: #f5c64f;
+  --cream-emboss: #f5ebd0;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-body);
+  --font-heading: var(--font-heading);
+  --font-script: var(--font-script);
+  --color-navy: var(--navy);
+  --color-teal: var(--teal);
+  --color-blush: var(--blush);
+  --color-cream: var(--cream);
+  --color-ink: var(--ink);
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-mustard: var(--mustard);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  position: relative;
+  background: var(--cream);
+}
+
+@keyframes flicker {
+  0%,
+  100% {
+    opacity: 1;
+    filter: drop-shadow(0 0 4px #ffb84d);
+  }
+  30% {
+    opacity: 0.85;
+    filter: drop-shadow(0 0 8px #ff9d2e);
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 6px #ffb84d);
+  }
+  75% {
+    opacity: 0.75;
+    filter: drop-shadow(0 0 3px #ff9d2e);
+  }
+}
+
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fall {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(var(--drift, 20px), 110vh) rotate(340deg);
+    opacity: 0.2;
+  }
+}
+
+@keyframes float-lantern {
+  0%,
+  100% {
+    transform: translateY(0) translateX(0) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(-18px) translateX(6px) rotate(2deg);
+  }
+}
+
+@keyframes swing-lamp {
+  0%,
+  100% {
+    transform: rotate(-6deg);
+  }
+  50% {
+    transform: rotate(6deg);
+  }
+}
+
+@keyframes fly-across {
+  0% {
+    transform: translate(-10vw, 0) scale(0.8);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.9;
+  }
+  50% {
+    transform: translate(50vw, -6vh) scale(1);
+  }
+  90% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(110vw, -2vh) scale(0.8);
+    opacity: 0;
+  }
+}
+
+@keyframes wing-flap {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.4);
+  }
+}
+
+@keyframes ripple-ring {
+  0% {
+    transform: translate(-50%, -50%) scale(0.15);
+    opacity: 0.7;
+    border-width: 3px;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+    border-width: 0.5px;
+  }
+}
+
+.animate-flicker {
+  animation: flicker 1.8s ease-in-out infinite;
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2s ease-in-out infinite;
+}
+
+@keyframes heart-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-heart-bob {
+  display: inline-block;
+  animation: heart-bob 2.6s ease-in-out infinite;
+}
+
+.animate-float-lantern {
+  animation: float-lantern 5s ease-in-out infinite;
+}
+
+.animate-swing-lamp {
+  animation: swing-lamp 4s ease-in-out infinite;
+}
+
+.kolam-divider path,
+.kolam-divider circle {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.kolam-divider.animate path,
+.kolam-divider.animate circle {
+  animation: draw 2.2s ease forwards;
+}
+
+.petal {
+  position: absolute;
+  top: -5%;
+  opacity: 0.85;
+  animation: fall linear infinite;
+  will-change: transform;
+}
+
+/* butterfly = outer span gliding across the screen, inner span bobbing and
+   tilting so the path reads as a flutter rather than a straight line */
+.bfly {
+  position: absolute;
+  left: 0;
+  animation: bfly-across var(--dur) linear forwards;
+  will-change: transform;
+}
+
+.bfly-inner {
+  display: inline-block;
+  animation: bfly-bob 1.9s ease-in-out infinite alternate;
+}
+
+.bfly.rtl {
+  animation-direction: reverse;
+}
+
+.bfly.rtl .bfly-inner {
+  transform: scaleX(-1);
+}
+
+@keyframes bfly-across {
+  from {
+    transform: translateX(-8vw);
+  }
+  to {
+    transform: translateX(108vw);
+  }
+}
+
+@keyframes bfly-bob {
+  from {
+    translate: 0 -16px;
+    rotate: -10deg;
+  }
+  to {
+    translate: 0 16px;
+    rotate: 12deg;
+  }
+}
+
+.petal-burst {
+  position: absolute;
+  opacity: 0;
+  will-change: transform;
+  animation: burst-out var(--bdur, 1.2s) cubic-bezier(0.15, 0.7, 0.3, 1) forwards;
+}
+
+@keyframes burst-out {
+  0% {
+    transform: translate(-50%, -50%) scale(0.4) rotate(0deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--bx)), calc(-50% + var(--by))) scale(1.1)
+      rotate(200deg);
+    opacity: 0;
+  }
+}
+
+/* scattered gallery polaroid — rests rotated/offset via CSS vars set inline
+   per photo; hovering straightens it, lifts it above its neighbours and
+   brings it to the front so overlapping cards are never stuck hidden.
+   The z-index bump has to live on .polaroid-slot (the flex item all the
+   cards actually stack as) — motion.js gives each Parallax wrapper its own
+   `transform`, which opens a stacking context that would trap a z-index set
+   only on the inner .polaroid, leaving sibling cards still covering it. */
+.polaroid-slot {
+  position: relative;
+  z-index: 1;
+}
+
+.polaroid-slot:has(.polaroid:hover),
+.polaroid-slot:has(.polaroid:focus-within),
+.polaroid-slot:has(.polaroid:active) {
+  z-index: 40;
+}
+
+.polaroid {
+  position: relative;
+  transform: rotate(var(--r, 0deg)) translate(var(--tx, 0), var(--ty, 0));
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+}
+
+.polaroid:hover,
+.polaroid:focus-within,
+.polaroid:active {
+  transform: translate(var(--tx, 0), var(--ty, 0)) translateY(-34px) scale(1.45) rotate(0deg);
+  box-shadow: 0 30px 60px rgba(44, 26, 16, 0.45);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reveal.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* recolor a black-silhouette PNG via CSS mask so we can fill it with a
+   gradient instead of the source's flat black */
+.mask-fill {
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+
+.arch-card {
+  position: relative;
+  background: linear-gradient(160deg, var(--cream), var(--cream-2));
+  border: 1px solid rgba(184, 134, 47, 0.35);
+  border-radius: 50% 50% 12px 12px / 18% 18% 12px 12px;
+  padding: 44px 26px 34px;
+  box-shadow: 0 18px 40px rgba(13, 26, 38, 0.25);
+  color: var(--ink);
+}
+
+.detail-row {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 14px 0;
+  border-bottom: 1px dashed rgba(184, 134, 47, 0.35);
+}
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.timeline {
+  position: relative;
+  list-style: none;
+  margin-top: 10px;
+}
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 23px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: repeating-linear-gradient(180deg, var(--gold) 0 6px, transparent 6px 12px);
+}
+.timeline li {
+  position: relative;
+  padding-left: 56px;
+  margin-bottom: 26px;
+}
+.timeline li:last-child {
+  margin-bottom: 0;
+}
+.timeline .icon {
+  position: absolute;
+  left: 0;
+  top: -2px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--gold-light), var(--gold));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  box-shadow: 0 0 0 4px var(--cream), 0 0 12px rgba(184, 134, 47, 0.4);
+}
+
+.photo-frame {
+  border: 3px solid var(--gold);
+  border-radius: 50% 50% 4px 4px / 30% 30% 4px 4px;
+  overflow: hidden;
+  max-width: 280px;
+  margin: 0 auto;
+  aspect-ratio: 3 / 4;
+  background: linear-gradient(160deg, var(--cream), var(--cream-2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--mustard-deep);
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(13, 26, 38, 0.2);
+}
+
+.btn {
+  display: inline-block;
+  background: linear-gradient(180deg, var(--gold-light), var(--gold));
+  color: var(--ink);
+  font-weight: 700;
+  padding: 13px 26px;
+  border-radius: 6px;
+  text-align: center;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  box-shadow: 0 6px 16px rgba(13, 26, 38, 0.25);
+  transition: transform 0.2s ease;
+}
+.btn:active {
+  transform: scale(0.97);
+}
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid var(--gold);
+  color: var(--gold);
+}
+
+.cd-box {
+  background: rgba(247, 237, 217, 0.9);
+  border: 1px solid var(--gold);
+  border-radius: 8px;
+  padding: 16px 14px;
+  min-width: 74px;
+  text-align: center;
+  color: var(--ink);
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(184, 134, 47, 0.4);
+  border-radius: 6px;
+  color: var(--ink);
+  font-size: 1rem;
+}
+.field input:focus,
+.field textarea:focus {
+  outline: 2px solid var(--gold);
+}
+.field textarea {
+  resize: vertical;
+  min-height: 80px;
 }
