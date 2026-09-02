@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useMotionValue, useReducedMotion } from "motion/react";
+import { rafThrottle } from "@/lib/rafThrottle";
 
 /**
  * Drives a translateY motion value from the element's offset from the
@@ -25,12 +26,13 @@ export function useParallax<T extends HTMLElement>(speed = 0.15) {
       const viewportCenter = window.innerHeight / 2;
       y.set((viewportCenter - elCenter) * speed);
     }
+    const onTick = rafThrottle(update);
     update();
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
+    window.addEventListener("scroll", onTick, { passive: true });
+    window.addEventListener("resize", onTick);
     return () => {
-      window.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
+      window.removeEventListener("scroll", onTick);
+      window.removeEventListener("resize", onTick);
     };
   }, [speed, y, reduced]);
 

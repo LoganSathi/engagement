@@ -9,7 +9,7 @@ import {
   ReactNode,
 } from "react";
 
-const VIDEO_ID = "tQ0aAZcFkew";
+const VIDEO_ID = "RG_63ln6qkI";
 const PLAYER_ELEMENT_ID = "bg-music-player";
 
 interface YTPlayerInstance {
@@ -30,6 +30,7 @@ interface YTNamespace {
       playerVars: Record<string, number | string>;
       events: {
         onReady: (event: { target: YTPlayerInstance }) => void;
+        onStateChange?: (event: { data: number }) => void;
       };
     }
   ) => YTPlayerInstance;
@@ -63,17 +64,29 @@ export function MusicProvider({ children }: { children: ReactNode }) {
         videoId: VIDEO_ID,
         playerVars: {
           autoplay: 0,
-          mute: 1,
+          // start unmuted at the API level (nothing plays yet — autoplay is
+          // off) so the tap only has to call playVideo(), not unMute() too.
+          // iOS Safari's user-activation propagates to a cross-origin
+          // iframe's postMessage API very narrowly; an unMute() call after
+          // the fact routinely gets dropped there, leaving playback silent.
+          mute: 0,
           loop: 1,
           playlist: VIDEO_ID,
           controls: 0,
           playsinline: 1,
           modestbranding: 1,
-          start: 1,
+          start: 0,
         },
         events: {
           onReady: () => {
             setReady(true);
+          },
+          onStateChange: (event) => {
+            // reflect the player's *actual* state rather than assuming the
+            // tap succeeded — if iOS blocks playback, state never reaches
+            // 1 (playing), so muted stays true and the visible SoundToggle
+            // remains an honest retry target
+            setMuted(event.data !== 1);
           },
         },
       });
@@ -99,9 +112,10 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   function play() {
     const player = playerRef.current;
     if (!player) return;
-    player.unMute();
+    // playVideo() first — same-gesture call the iframe API actually honors
+    // on iOS. unMute() is a defensive follow-up, not the primary unlock.
     player.playVideo();
-    setMuted(false);
+    player.unMute();
   }
 
   function toggle() {

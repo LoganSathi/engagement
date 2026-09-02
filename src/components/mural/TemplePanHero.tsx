@@ -9,6 +9,7 @@ import {
   useReducedMotion,
 } from "motion/react";
 import { ART } from "@/lib/artwork";
+import { rafThrottle } from "@/lib/rafThrottle";
 
 /**
  * S1+S2 — the signature move. A 280vh scroll runway pins a 100svh viewport;
@@ -82,12 +83,13 @@ export default function TemplePanHero() {
       const p = total > 0 ? Math.min(Math.max(scrolled / total, 0), 1) : 0;
       scaleMV.set(mobile ? 1.35 - 0.35 * p : 1);
     }
+    const onTick = rafThrottle(update);
     update();
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
+    window.addEventListener("scroll", onTick, { passive: true });
+    window.addEventListener("resize", onTick);
     return () => {
-      window.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
+      window.removeEventListener("scroll", onTick);
+      window.removeEventListener("resize", onTick);
     };
   }, [progress, travelMV, liftMV, scaleMV, mobile, reduced]);
 

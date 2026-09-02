@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Marcellus, Mukta } from "next/font/google";
 import CustomCursor from "@/components/CustomCursor";
 import "./globals.css";
@@ -42,6 +42,13 @@ export const metadata: Metadata = {
     description:
       "Join us for the engagement ceremony of Logan & Venolia — Friday, September 11, 2026, Cyberjaya, Selangor.",
   },
+};
+
+// fixes a mobile browser-chrome color flash: without this, Chrome/Safari
+// auto-color the address bar from a default, then snap to match the page
+// once it paints (the gold/cream envelope) — pinning it removes the jump
+export const viewport: Viewport = {
+  themeColor: "#b8862f",
 };
 
 export default function RootLayout({
