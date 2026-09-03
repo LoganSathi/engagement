@@ -46,9 +46,15 @@ export default function DateScratchReveal() {
   const [parts, setParts] = useState<ReturnType<typeof getParts> | null>(null);
 
   useEffect(() => {
-    if (localStorage.getItem(STORAGE_KEY)) {
-      setRevealed(true);
-      setFoilGone(true);
+    // localStorage access throws in some private-browsing/locked-down
+    // configurations rather than just being unavailable
+    try {
+      if (localStorage.getItem(STORAGE_KEY)) {
+        setRevealed(true);
+        setFoilGone(true);
+      }
+    } catch {
+      // ignore — local storage isn't available here
     }
   }, []);
 
@@ -113,7 +119,11 @@ export default function DateScratchReveal() {
   function reveal() {
     if (revealed) return;
     setRevealed(true);
-    localStorage.setItem(STORAGE_KEY, "1");
+    try {
+      localStorage.setItem(STORAGE_KEY, "1");
+    } catch {
+      // ignore — the reveal still works, it just won't persist next visit
+    }
     setTimeout(() => setFoilGone(true), 700);
     const rect = cardRef.current?.getBoundingClientRect();
     fireBurst({

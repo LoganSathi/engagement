@@ -97,7 +97,14 @@ export default function EnvelopeIntro() {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    if (sessionStorage.getItem("lv_visited")) setSkip(true);
+    // sessionStorage access throws in some private-browsing/locked-down
+    // configurations (strict cookie-blocking settings) rather than just
+    // being unavailable — treat that the same as "not visited yet"
+    try {
+      if (sessionStorage.getItem("lv_visited")) setSkip(true);
+    } catch {
+      // ignore — session storage isn't available here
+    }
   }, []);
 
   useEffect(() => {
@@ -109,7 +116,14 @@ export default function EnvelopeIntro() {
 
   function handleOpen() {
     if (opened) return;
-    sessionStorage.setItem("lv_visited", "1");
+    // guarded, and after the state that actually opens the envelope: a
+    // throw here (private-browsing/cookie-blocked configs) must not stop
+    // the envelope from opening or the body scroll-lock from clearing
+    try {
+      sessionStorage.setItem("lv_visited", "1");
+    } catch {
+      // ignore — the site still works, it just won't skip the intro next visit
+    }
     setOpened(true);
     playMusic();
     unlockAudio();
