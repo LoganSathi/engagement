@@ -46,6 +46,11 @@ export const MAP_EMBED_SRC =
 export const MAP_DIRECTIONS_URL =
   "https://www.google.com/maps/dir/?api=1&destination=No+9,+Jalan+CV+4B%2F1,+Cyber+Valley,+63300+Cyberjaya,+Selangor,+Malaysia";
 
+export const WAZE_EMBED_SRC =
+  "https://embed.waze.com/iframe?zoom=16&lat=2.911001&lon=101.625303&ct=livemap";
+
+export const WAZE_DIRECTIONS_URL = "https://waze.com/ul/hw28289cjx";
+
 // TODO: replace with the real WhatsApp number (country code + digits only,
 // e.g. Malaysian mobile "60123456789") before sharing the site.
 export const RSVP_WHATSAPP_PHONE = "60123456789";

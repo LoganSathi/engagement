@@ -8,6 +8,8 @@ import {
   buildIcsBlobUrl,
   MAP_DIRECTIONS_URL,
   MAP_EMBED_SRC,
+  WAZE_DIRECTIONS_URL,
+  WAZE_EMBED_SRC,
 } from "@/lib/event";
 
 const EVENTS = [
@@ -98,7 +100,10 @@ export default function EventPillars() {
                   + Apple / Outlook
                 </button>
               </div>
-              <div className="mt-5 rounded-lg overflow-hidden border-2 border-[var(--gold)]">
+              <p className="mt-5 text-xs uppercase tracking-[0.25em] text-[var(--gold)]">
+                Google Maps
+              </p>
+              <div className="mt-2 rounded-lg overflow-hidden border-2 border-[var(--gold)]">
                 <iframe
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
@@ -114,7 +119,30 @@ export default function EventPillars() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Get Directions →
+                  Maps →
+                </a>
+              </div>
+
+              <p className="mt-7 text-xs uppercase tracking-[0.25em] text-[var(--gold)]">
+                Waze
+              </p>
+              <div className="mt-2 rounded-lg overflow-hidden border-2 border-[var(--gold)]">
+                <iframe
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  src={WAZE_EMBED_SRC}
+                  className="w-full h-56 border-0 block [filter:sepia(.15)_saturate(1.1)]"
+                  allowFullScreen
+                />
+              </div>
+              <div className="flex justify-center mt-5">
+                <a
+                  className="btn btn-outline"
+                  href={WAZE_DIRECTIONS_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Open in Waze →
                 </a>
               </div>
             </EventCard>
