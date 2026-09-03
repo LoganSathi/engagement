@@ -8,8 +8,8 @@ const POLAROIDS = [
   { rotate: "-7deg", x: "-14%", y: "6%", speed: 0.07, src: "/gallery/photo-5.png" },
   { rotate: "5deg", x: "12%", y: "-4%", speed: -0.06, src: "/gallery/photo-4.png" },
   { rotate: "-3deg", x: "-2%", y: "2%", speed: 0.09, src: "/gallery/photo-3.png" },
-  { rotate: "9deg", x: "18%", y: "8%", speed: -0.08, src: "/gallery/photo-2.png" },
-  { rotate: "-11deg", x: "-20%", y: "-6%", speed: 0.06, src: "/gallery/photo-1.png" },
+  { rotate: "9deg", x: "18%", y: "8%", speed: -0.08, src: "/gallery/photo-1.png" },
+  { rotate: "-11deg", x: "-20%", y: "-6%", speed: 0.06, src: "/gallery/photo-2.png" },
 ];
 
 /**
