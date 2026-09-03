@@ -129,9 +129,6 @@ export default function TemplePanHero() {
 
   const staticNames = (
     <div className="flex flex-col items-center px-4 pt-[5svh] sm:pt-[10svh] text-center">
-      <div className="font-script italic text-[var(--maroon)] text-lg tracking-wide mb-3">
-        திருமண நிச்சயம்
-      </div>
       <h1 className="font-heading text-[var(--ink)] tracking-[0.18em] text-[clamp(2.2rem,9vw,4rem)] leading-tight">
         LOGAN
       </h1>
@@ -150,9 +147,6 @@ export default function TemplePanHero() {
   const staggeredNames = (
     <div className="flex flex-col items-center px-4 pt-[5svh] sm:pt-[10svh] text-center">
       <motion.div style={{ opacity: groomOpacity, y: groomY }}>
-        <div className="font-script italic text-[var(--maroon)] text-lg tracking-wide mb-3">
-          திருமண நிச்சயம்
-        </div>
         <h1 className="font-heading text-[var(--ink)] tracking-[0.18em] text-[clamp(2.2rem,9vw,4rem)] leading-tight">
           LOGAN
         </h1>

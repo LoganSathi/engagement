@@ -185,7 +185,7 @@ export default function DateScratchReveal() {
           tabIndex={0}
           aria-label={
             revealed
-              ? "Engagement date: Friday, September 11, 2026 at 7 PM"
+              ? "Engagement date: Friday, September 11, 2026 at 7:30 PM"
               : "Scratch card — press Enter to reveal the engagement date"
           }
           onKeyDown={(e) => {
@@ -203,7 +203,7 @@ export default function DateScratchReveal() {
               September 11, 2026
             </p>
             <p className="mt-1 text-xs uppercase tracking-[0.3em] text-[var(--ink)]/70">
-              Friday · 7:10 PM ONWARDS
+              Friday · 7:30 PM ONWARDS
             </p>
           </div>
 

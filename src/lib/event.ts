@@ -4,10 +4,10 @@ export const EVENT_LOCATION =
 export const EVENT_DESC =
   "Join us as we celebrate the engagement of Logan & Venolia.";
 
-// 2026-09-11 19:00 MYT (UTC+8) -> 11:00 UTC. Ceremony window assumed 3 hours.
-export const EVENT_START_UTC = "20260911T110000Z";
-export const EVENT_END_UTC = "20260911T140000Z";
-export const EVENT_TARGET_MS = Date.parse("2026-09-11T19:00:00+08:00");
+// 2026-09-11 19:30 MYT (UTC+8) -> 11:30 UTC. Ceremony window assumed 3 hours.
+export const EVENT_START_UTC = "20260911T113000Z";
+export const EVENT_END_UTC = "20260911T143000Z";
+export const EVENT_TARGET_MS = Date.parse("2026-09-11T19:30:00+08:00");
 
 export function buildGoogleCalendarUrl() {
   const params = new URLSearchParams({
@@ -52,7 +52,7 @@ export const RSVP_WHATSAPP_PHONE = "60123456789";
 
 export function buildWhatsAppUrl() {
   const text =
-    "Hi! RSVP for Logan & Venolia's Engagement (Fri 11 Sep 2026, 7PM, Cyber Valley):\n" +
+    "Hi! RSVP for Logan & Venolia's Engagement (Fri 11 Sep 2026, 7:30PM, Cyber Valley):\n" +
     "Name: \nNumber of guests: ";
   return `https://wa.me/${RSVP_WHATSAPP_PHONE}?text=${encodeURIComponent(text)}`;
 }

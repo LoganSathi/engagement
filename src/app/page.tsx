@@ -9,7 +9,6 @@ import ArchInvitation from "@/components/mural/ArchInvitation";
 import EventPillars from "@/components/mural/EventPillars";
 import PillarFrame from "@/components/mural/PillarFrame";
 import DateScratchReveal from "@/components/mural/DateScratchReveal";
-import GallerySection from "@/components/mural/GallerySection";
 import CountdownFinale from "@/components/mural/CountdownFinale";
 
 export default function Home() {
@@ -23,15 +22,14 @@ export default function Home() {
         <GaneshaCrest />
         <TemplePanHero />
         <GatewayWall />
-        {/* GarlandScene, StorySection and RsvpWhatsApp were removed from the
-            flow (components kept on disk) — scratch-reveal date + countdown
-            now sits between the invitation and the schedule */}
+        {/* GarlandScene, StorySection, RsvpWhatsApp and GallerySection were
+            removed from the flow (components kept on disk) — scratch-reveal
+            date + countdown now sits between the invitation and the schedule */}
         <PillarFrame>
           <ArchInvitation />
           <DateScratchReveal />
           <EventPillars />
         </PillarFrame>
-        <GallerySection />
         <CountdownFinale />
       </main>
 

@@ -11,15 +11,20 @@ import {
 } from "@/lib/event";
 
 const EVENTS = [
-  // { time: "6:30 PM", title: "Welcome & Lamp Lighting", icon: "🪔" },
-  { time: "7:10 PM", title: "Nichayathartham Ceremony", icon: "🌸" },
-  { time: "8:00 PM", title: "Ring Exchange", icon: "💍" },
-  { time: "8:30 PM", title: "Blessings from Elders", icon: "🙏" },
-  { time: "9:00 PM", title: "Dinner & Celebration", icon: "🍽️" },
+  // { title: "Welcome & Lamp Lighting", icon: "🪔" },
+  { title: "Engagement Ceremony", icon: "🌸" },
+  { title: "Ring Exchange", icon: "💍" },
+  { title: "Blessings from Elders", icon: "🙏" },
+  { title: "Dinner & Celebration", icon: "🍽️" },
+];
+
+const GROOM_CONTACTS = [
+  { name: "Mr. Dhiwan", phone: "01120966799" },
+  { name: "Mr. Sugan", phone: "0189799377" },
 ];
 
 const BRIDE_CONTACTS = [
-  { name: "Dr. Vekes", phone: "0102652379" },
+  { name: "Mr. Vekes", phone: "0102652379" },
   { name: "Mr. Ghopalen", phone: "0192732710" },
   { name: "Mr. Bala", phone: "01116651010" },
 ];
@@ -69,7 +74,7 @@ export default function EventPillars() {
         <div className="flex flex-col gap-7">
           {EVENTS.map((item) => (
             <RevealSection as="div" key={item.title}>
-              <EventCard icon={item.icon} title={item.title} time={item.time} />
+              <EventCard icon={item.icon} title={item.title} />
             </RevealSection>
           ))}
 
@@ -117,21 +122,48 @@ export default function EventPillars() {
 
           <RevealSection as="div">
             <EventCard icon="📞" title="Contact Details">
-              <ul className="mt-4 flex flex-col gap-3">
-                {BRIDE_CONTACTS.map((c) => (
-                  <li key={c.name} className="text-center">
-                    <div className="text-sm text-[var(--ink)]/90">
-                      {c.name}
-                    </div>
-                    <a
-                      href={myTelHref(c.phone)}
-                      className="text-sm text-[var(--maroon)] tracking-wide"
-                    >
-                      {formatMyPhone(c.phone)}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+              <div className="mt-4 grid grid-cols-2 gap-4 sm:gap-8">
+                <div>
+                  <p className="text-center text-xs uppercase tracking-[0.2em] text-[var(--gold)] mb-3">
+                    Groom-to-be
+                  </p>
+                  <ul className="flex flex-col gap-3">
+                    {GROOM_CONTACTS.map((c) => (
+                      <li key={c.name} className="text-center">
+                        <div className="text-sm text-[var(--ink)]/90">
+                          {c.name}
+                        </div>
+                        <a
+                          href={myTelHref(c.phone)}
+                          className="text-sm text-[var(--maroon)] tracking-wide"
+                        >
+                          {formatMyPhone(c.phone)}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="border-l border-dashed border-[var(--gold)]/35 pl-4 sm:pl-8">
+                  <p className="text-center text-xs uppercase tracking-[0.2em] text-[var(--gold)] mb-3">
+                    Bride-to-be
+                  </p>
+                  <ul className="flex flex-col gap-3">
+                    {BRIDE_CONTACTS.map((c) => (
+                      <li key={c.name} className="text-center">
+                        <div className="text-sm text-[var(--ink)]/90">
+                          {c.name}
+                        </div>
+                        <a
+                          href={myTelHref(c.phone)}
+                          className="text-sm text-[var(--maroon)] tracking-wide"
+                        >
+                          {formatMyPhone(c.phone)}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
             </EventCard>
           </RevealSection>
         </div>
