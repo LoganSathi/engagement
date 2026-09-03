@@ -18,6 +18,26 @@ const EVENTS = [
   { time: "9:00 PM", title: "Dinner & Celebration", icon: "🍽️" },
 ];
 
+const BRIDE_CONTACTS = [
+  { name: "Dr. Vekes", phone: "0102652379" },
+  { name: "Mr. Ghopalen", phone: "0192732710" },
+  { name: "Mr. Bala", phone: "01116651010" },
+];
+
+// "011-2096 6799" / "018-979 9377" — standard Malaysian mobile grouping
+function formatMyPhone(num: string) {
+  const prefix = num.slice(0, 3);
+  const rest = num.slice(3);
+  return rest.length === 8
+    ? `${prefix}-${rest.slice(0, 4)} ${rest.slice(4)}`
+    : `${prefix}-${rest.slice(0, 3)} ${rest.slice(3)}`;
+}
+
+// local "0XX..." -> international "+60XX..." (leading 0 dropped)
+function myTelHref(num: string) {
+  return `tel:+60${num.slice(1)}`;
+}
+
 /**
  * S5 — schedule cards plus the "Getting There" logistics card (calendar +
  * map); the carved-pillar side borders come from the PillarFrame wrapper.
@@ -92,6 +112,26 @@ export default function EventPillars() {
                   Get Directions →
                 </a>
               </div>
+            </EventCard>
+          </RevealSection>
+
+          <RevealSection as="div">
+            <EventCard icon="📞" title="Contact Details">
+              <ul className="mt-4 flex flex-col gap-3">
+                {BRIDE_CONTACTS.map((c) => (
+                  <li key={c.name} className="text-center">
+                    <div className="text-sm text-[var(--ink)]/90">
+                      {c.name}
+                    </div>
+                    <a
+                      href={myTelHref(c.phone)}
+                      className="text-sm text-[var(--maroon)] tracking-wide"
+                    >
+                      {formatMyPhone(c.phone)}
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </EventCard>
           </RevealSection>
         </div>
